@@ -69,8 +69,13 @@ class Loop(object):
             self.check_process()
             log.info('process killed')
             self.active_process.kill()
-        self.active_process = subprocess.Popen(self.cmd)
-        log.info('cmd dispatched: {}'.format(self.cmd))
+        cmd_str = ' '.join(self.cmd)
+        try:
+            self.active_process = subprocess.Popen(self.cmd)
+        except OSError as e:
+            log.error('ERROR with command: {0} MESSAGE: {1}'.format(cmd_str, e.strerror))
+            sys.exit(1)
+        log.info('cmd dispatched: {}'.format(cmd_str))
 
     def check_process(self):
         if self.active_process:
