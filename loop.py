@@ -6,10 +6,10 @@ import os
 import sys
 import logging
 import time
+import fnmatch
 
 from inotify import watcher
 import inotify
-import git
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)-15s:%(name)s: %(message)s')
@@ -22,20 +22,36 @@ class Loop(object):
         self.cmd = cmd
         self.path = path
         self.active_process = None
-        self.init_file_filter()
+        self.file_ignore_pattern = self.init_file_filter()
         self.watcher = self.init_watcher()
         self.dispatch_cmd()
         self.watch_loop()
 
     def init_file_filter(self):
-        g = git.Git(self.path)
-        try:
-            self.known_files = [os.path.abspath(fn) for fn in g.ls_files().split('\n')]
-        except git.GitCommandError:
-            self.known_files = []
+        file_ignore_pattern = []
+        file_ignore_pattern.extend(self._add_git_ignored())
+        return file_ignore_pattern
+
+    def _add_git_ignored(self):
+        def get_git_ignore_path():
+            path = self.path
+            while path != '/':
+                gi = os.path.join(path, '.gitignore')
+                if os.path.exists(gi):
+                    return gi
+                path = os.path.join(path, os.pardir)
+            return None
+        git_ignore_path = get_git_ignore_path()
+        if git_ignore_path:
+            with open(git_ignore_path) as f:
+                return [os.path.join(os.path.dirname(git_ignore_path), line.strip())
+                        for line in f.read().split('\n') if line]
+        else:
+            return []
 
     def is_watched(self, fn):
-        if self.known_files and fn not in self.known_files:
+        if any(fnmatch.fnmatch(fn, ignored_path)
+               for ignored_path in self.file_ignore_pattern):
             return False
         return True
 
