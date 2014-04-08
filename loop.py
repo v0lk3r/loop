@@ -87,7 +87,10 @@ class Loop(object):
                 notify = ['notify-send', '{0}'.format(status), ' '.join(self.cmd)]
                 if status == 'FAIL':
                     notify[1:1] = ['-u', 'critical']
-                subprocess.call(notify)
+                try:
+                    subprocess.call(notify)
+                except OSError as e:
+                    log.warn('notification not send. error: {}'.format(e.strerror))
 
     def watch_loop(self):
         try:
