@@ -43,7 +43,7 @@ class Loop(object):
         w = watcher.AutoWatcher()
         w.add_all(self.path, inotify.IN_MODIFY | inotify.IN_CREATE)
         if not w.num_watches():
-            print 'no files to watch'
+            log.error('no files to watch')
             sys.exit(1)
         return w
 
