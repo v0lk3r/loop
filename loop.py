@@ -12,7 +12,9 @@ from inotify import watcher
 import inotify
 
 logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)-15s:%(name)s: %(message)s')
+                    format='%(asctime)s:%(name)s: %(message)s',
+                    datefmt='%H:%M:%S'
+                )
 log = logging.getLogger('loop')
 
 
