@@ -112,10 +112,10 @@ class Loop(object):
                 log.info('running process killed')
 
 
-def start_watcher():
+def main():
     path = os.path.abspath(os.path.curdir)
     cmd = sys.argv[1:]
     Loop(cmd, path)
 
 if __name__ == '__main__':
-    start_watcher()
+    main()
