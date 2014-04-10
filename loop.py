@@ -13,7 +13,7 @@ import inotify
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)-15s:%(name)s: %(message)s')
-log = logging.getLogger('watcher')
+log = logging.getLogger('loop')
 
 
 class Loop(object):
