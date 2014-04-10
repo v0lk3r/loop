@@ -14,3 +14,12 @@ Usage
 =====
 
  loop ls -la
+
+
+Installation
+============
+
+ python setup.py install
+
+
+
