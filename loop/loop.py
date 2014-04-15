@@ -19,6 +19,7 @@ log = logging.getLogger('loop')
 
 
 class Loop(object):
+    default_ignore_pattern = ['*/.#*']
 
     def __init__(self, cmd, path):
         self.cmd = cmd
@@ -32,6 +33,7 @@ class Loop(object):
     def init_file_filter(self):
         file_ignore_pattern = []
         file_ignore_pattern.extend(self._add_git_ignored())
+        file_ignore_pattern.extend(self.default_ignore_pattern)
         return file_ignore_pattern
 
     def _add_git_ignored(self):
