@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name='Loop',
-    version='0.1',
+    version='0.1.1',
     packages=['loop'],
     install_requires=['pyinotify==0.9.4'],
     entry_points={
