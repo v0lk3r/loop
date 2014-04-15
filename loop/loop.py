@@ -19,7 +19,9 @@ log = logging.getLogger('loop')
 
 
 class Loop(object):
-    default_ignore_pattern = ['*/.#*']
+    default_ignore_pattern = ['*/.#*',  # emacs tmp files,
+                              '*/.git*',  # git tmp files
+    ]
 
     def __init__(self, cmd, path):
         self.cmd = cmd
