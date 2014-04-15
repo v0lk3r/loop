@@ -59,6 +59,7 @@ class Loop(object):
         if any(fnmatch.fnmatch(fn, ignored_path)
                for ignored_path in self.file_ignore_pattern):
             return False
+        log.info('watched file changed/created: {}'.format(fn))
         return True
 
     def init_watcher(self):
