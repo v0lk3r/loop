@@ -7,7 +7,7 @@ setup(
     name='Loop',
     version='0.1.1',
     packages=['loop'],
-    install_requires=['pyinotify==0.9.4'],
+    install_requires=['python-inotify==0.6-test'],
     entry_points={
         'console_scripts': [
             'loop=loop.loop:main',
