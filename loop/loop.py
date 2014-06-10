@@ -44,7 +44,7 @@ class Loop(object):
             while path != '/':
                 gi = os.path.join(path, '.gitignore')
                 if os.path.exists(gi):
-                    return gi
+                    return os.path.realpath(gi)
                 path = os.path.join(path, os.pardir)
             return None
         git_ignore_path = get_git_ignore_path()
