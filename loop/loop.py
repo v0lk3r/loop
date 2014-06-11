@@ -22,6 +22,7 @@ class Loop(object):
     default_ignore_pattern = ['*/.#*',  # emacs tmp files,
                               '*/.git*',  # git tmp files
     ]
+    last_change_fn = '<start up dispatch job>'
 
     def __init__(self, cmd, path):
         self.cmd = cmd
@@ -60,6 +61,7 @@ class Loop(object):
                for ignored_path in self.file_ignore_pattern):
             return False
         log.info('watched file changed/created: {}'.format(fn))
+        self.last_change_fn = fn
         return True
 
     def init_watcher(self):
@@ -89,7 +91,8 @@ class Loop(object):
             ret = self.active_process.poll()
             if ret is not None:
                 self.active_process = None
-                log.info('process returned with {}'.format(ret))
+                log.info('process returned with {0}. triggered by change in {1}'.format(
+                    ret, self.last_change_fn))
                 status = 'SUCCESS!' if ret <= 0 else 'FAIL'
                 notify = ['notify-send', '{0}'.format(status), ' '.join(self.cmd)]
                 if status == 'FAIL':
